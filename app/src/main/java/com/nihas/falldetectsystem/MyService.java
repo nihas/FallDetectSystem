@@ -88,7 +88,7 @@ public class MyService extends Service implements SensorEventListener {
                     Log.i("Accel", "Hitted on ground. " + Math.sqrt((x * x) + (y * y) + (z * z)));
                     status_person=3;
                     m1_fall.start();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), FallDetectActivity.class);
                     intent.setAction(Intent.ACTION_MAIN);
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), REQUEST_CODE,
@@ -131,13 +131,13 @@ public class MyService extends Service implements SensorEventListener {
     }
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Fall Service Stopped", Toast.LENGTH_LONG).show();
         senSensorManager.unregisterListener(this);
     }
 
     @Override
     public void onStart(Intent intent, int startid) {
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Fall Service Started", Toast.LENGTH_LONG).show();
     }
 
 }

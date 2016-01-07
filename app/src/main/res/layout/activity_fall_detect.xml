@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/alert"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALERT"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A FALL HAS BEEN DETECTED"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="are you alright?"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/negative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NO"
+                android:layout_marginRight="5dp"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YES"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimaryDark"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/wait"
+            android:visibility="invisible"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="10"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:background="@drawable/rounded_stroke_indicator"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

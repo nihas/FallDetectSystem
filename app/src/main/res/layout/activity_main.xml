@@ -3,26 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/quit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="exit_app"
+            android:background="@drawable/pause" />
+
+
+
+        <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="117dp"
-        android:layout_marginTop="130dp"
         android:onClick="start_app"
-        android:text="@string/start" />
+        android:background="@drawable/play" />
 
-    <Button
-        android:id="@+id/quit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/start"
-        android:layout_alignRight="@+id/start"
-        android:layout_below="@+id/start"
-        android:layout_marginTop="83dp"
-        android:onClick="exit_app"
-        android:text="@string/quit" />
-    
+
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/app_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Started"
+            android:layout_marginTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
 </RelativeLayout>

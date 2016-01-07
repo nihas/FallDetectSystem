@@ -3,6 +3,7 @@ package com.nihas.falldetectsystem;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends Activity  implements View.OnClickListener{
 
@@ -26,17 +28,30 @@ public class MainActivity extends Activity  implements View.OnClickListener{
     private static final int SHAKE_THRESHOLD = 600;
     int status_person=0; //0 : initial value, 1: Falling detected, 2: Falling Confirmed,3:Hit detected,4:Inactivity,5:geting response
     Button start,quit;
+    TextView appStatus;
 
 
-	@Override
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         start=(Button)findViewById(R.id.start);
         quit=(Button)findViewById(R.id.quit);
+        appStatus=(TextView)findViewById(R.id.app_status);
+
         start.setOnClickListener(this);
         quit.setOnClickListener(this);
+
+        if(isMyServiceRunning(MyService.class)){
+            start.setVisibility(View.GONE);
+            appStatus.setText("SERVICE RUNNING");
+        }else{
+            start.setVisibility(View.VISIBLE);
+            appStatus.setText("SERVICE STOPPED");
+        }
 
 //        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 //        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -133,12 +148,27 @@ public class MainActivity extends Activity  implements View.OnClickListener{
             case R.id.start:
 //                senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
                 startService(new Intent(this, MyService.class));
+                start.setVisibility(View.GONE);
+                appStatus.setText("SERVICE RUNNING");
+                finish();
                 break;
             case R.id.quit:
 //                senSensorManager.unregisterListener(this);
                 stopService(new Intent(this, MyService.class));
+                start.setVisibility(View.VISIBLE);
+                appStatus.setText("SERVICE STOPPED");
                 break;
         }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 //   public void start_app(View view){
 //
