@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FallDetectSystem</string>
+    <string name="app_name">Fall Detector</string>
     <string name="action_settings">Settings</string>
 
     <string name="menu_settings">Settings</string>

@@ -8,8 +8,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,6 +44,9 @@ public class MyService extends Service implements SensorEventListener {
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
+
+
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // TODO Auto-generated method stub
@@ -67,7 +72,7 @@ public class MyService extends Service implements SensorEventListener {
 //            if ((curTime - lastUpdate) > 50) {
             long diffTime = (curTime - lastUpdate);
             lastUpdate = curTime;
-            Log.i("Accel", "A Fall detected. " + Math.sqrt((x * x) + (y * y) + (z * z)));
+//            Log.i("Accel", "A Fall detected. " + Math.sqrt((x * x) + (y * y) + (z * z)));
             if(status_person==0) {
                 if (Math.sqrt((x * x) + (y * y) + (z * z)) < 5) {
                     Log.i("Accel", "Falling. " + Math.sqrt((last_x * last_x) + (last_y * last_y) + (last_z * last_z)));
@@ -87,6 +92,10 @@ public class MyService extends Service implements SensorEventListener {
                 if (Math.sqrt((x * x) + (y * y) + (z * z)) > 10.5) {
                     Log.i("Accel", "Hitted on ground. " + Math.sqrt((x * x) + (y * y) + (z * z)));
                     status_person=3;
+                    AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                    int maxVolumeMusic = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolumeMusic,AudioManager.RINGER_MODE_VIBRATE);
                     m1_fall.start();
                     Intent intent = new Intent(getApplicationContext(), FallDetectActivity.class);
                     intent.setAction(Intent.ACTION_MAIN);

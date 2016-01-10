@@ -16,12 +16,13 @@ public class FallDetectActivity extends AppCompatActivity implements View.OnClic
     Button negativ,positiv;
     Handler mHandler = new Handler();
     int WAITING_TIME=10;
+    Boolean isRunning=true;
     TextView wait;
     Thread myThread;
     Runnable myRunnable=new Runnable() {
         @Override
         public void run() {
-            while (true) {
+            while (isRunning) {
                 try {
                     Thread.sleep(1000);
                     mHandler.post(new Runnable() {
@@ -32,8 +33,7 @@ public class FallDetectActivity extends AppCompatActivity implements View.OnClic
                             // Write your code here to update the UI.
                             if(WAITING_TIME<0){
                                 Toast.makeText(FallDetectActivity.this,"Emergency Message initialised",Toast.LENGTH_LONG).show();
-                                mHandler.removeCallbacksAndMessages(myRunnable);
-                                myThread.interrupt();
+                                isRunning=false;
                             }else{
                                 wait.setVisibility(View.VISIBLE);
                                 wait.setText(String.valueOf(WAITING_TIME));

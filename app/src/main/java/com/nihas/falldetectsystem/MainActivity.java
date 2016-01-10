@@ -4,6 +4,9 @@ package com.nihas.falldetectsystem;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -11,6 +14,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -29,6 +34,7 @@ public class MainActivity extends Activity  implements View.OnClickListener{
     int status_person=0; //0 : initial value, 1: Falling detected, 2: Falling Confirmed,3:Hit detected,4:Inactivity,5:geting response
     Button start,quit;
     TextView appStatus;
+    NotificationManager mNotificationManager;
 
 
 
@@ -57,6 +63,7 @@ public class MainActivity extends Activity  implements View.OnClickListener{
 //        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 ////        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
+
 
 
 
@@ -150,13 +157,17 @@ public class MainActivity extends Activity  implements View.OnClickListener{
                 startService(new Intent(this, MyService.class));
                 start.setVisibility(View.GONE);
                 appStatus.setText("SERVICE RUNNING");
+                notifyMe();
                 finish();
+
                 break;
             case R.id.quit:
 //                senSensorManager.unregisterListener(this);
                 stopService(new Intent(this, MyService.class));
                 start.setVisibility(View.VISIBLE);
                 appStatus.setText("SERVICE STOPPED");
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(01);
                 break;
         }
     }
@@ -169,6 +180,38 @@ public class MainActivity extends Activity  implements View.OnClickListener{
             }
         }
         return false;
+    }
+
+
+    public void notifyMe(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setVisibility(Notification.VISIBILITY_PUBLIC)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Fall Detector Running")
+                        .setContentText("Listening to phones Accelerometer sensor").setAutoCancel(false).setTicker("Fall detector Running").setOngoing(true);
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        01,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(01, mBuilder.build());
     }
 //   public void start_app(View view){
 //
